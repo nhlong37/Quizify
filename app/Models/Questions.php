@@ -9,8 +9,8 @@ class Questions extends Model
 {
     use SoftDeletes;
 
-    protected $table='questions';
-    protected $primaryKey='id';
+    protected $table = 'questions';
+    protected $primaryKey = 'id';
     protected $fillable = ['topic_id', 'content', 'img_url'];
 
     // Một câu hỏi thuộc một chủ đề (n-1)
@@ -29,5 +29,11 @@ class Questions extends Model
     public function userAnswers()
     {
         return $this->hasMany(UserAnswers::class); // 1 Question - n UserAnswer
+    }
+
+    // Một câu hỏi chỉ thuộc một loại câu hỏi duy nhất
+    public function questionType()
+    {
+        return $this->belongsTo(QuestionType::class); // 1 Question - n Question Type
     }
 }

@@ -49,11 +49,20 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        
+        // Table Type Questions
+        Schema::create('question_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name'); // 'single_choice', 'multiple_choice', etc.
+            $table->string('label'); // "Trắc nghiệm 1 đáp án"
+            $table->timestamps();
+        });
 
         // Table Questions
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('topic_id')->constrained('topics')->onDelete('cascade');
+            $table->foreignId('question_type_id')->constrained('question_types')->onDelete('cascade');
             $table->text('content');
             $table->string('img_url')->nullable();
             $table->timestamps();
@@ -88,6 +97,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('user_answers');
         Schema::dropIfExists('answers');
+        Schema::dropIfExists('question_types');
         Schema::dropIfExists('questions');
         Schema::dropIfExists('topics');
         Schema::dropIfExists('users');
